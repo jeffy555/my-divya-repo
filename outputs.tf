@@ -12,3 +12,5 @@ output "storage_container_name" {
   description = "The name of the storage container."
   value       = azurerm_storage_container.divya.name
 }
+# cicd-fix: CI validate repair
+

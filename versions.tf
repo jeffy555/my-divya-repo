@@ -1,5 +1,6 @@
 terraform {
-  required_version = ">= 1.3.0"
+# cicd-fix: CI validate repair
+  # cicd-fix: keep one required_providers block; required_version remains in terraform.tf
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
