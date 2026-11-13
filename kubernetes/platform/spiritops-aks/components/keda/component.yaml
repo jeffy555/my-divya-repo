@@ -1,0 +1,13 @@
+name: keda
+source: https://kedacore.github.io/charts/keda
+version: 2.21.0
+archiveSha256: a7da56bf41a33dad9d2fc82a6fdecee552fff947d80bf1e1dbcf4db0f9e26dee
+namespace: keda
+license: Apache-2.0
+requires:
+  - cert-manager
+mode: controller-only
+verification: isolated-cron-scaling
+probePublisher: docker.io/library/alpine
+probePurpose: Temporary two-replica scaling test; namespace removal is verified.
+data_bearing: false

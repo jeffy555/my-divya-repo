@@ -1,0 +1,851 @@
+source: https://kedacore.github.io/charts/keda
+version: 2.21.0
+archiveSha256: a7da56bf41a33dad9d2fc82a6fdecee552fff947d80bf1e1dbcf4db0f9e26dee
+renderedSha256: d07b70e64e533acebf4f0ef06e79c23a328b04c4da776a1e3dec15fdb50ce49d
+images:
+- ghcr.io/kedacore/keda-admission-webhooks:2.21.0@sha256:e1969628cca6123e32eea13c47c75817091af2657fa68d9d0d58a8620d1b75b1
+- ghcr.io/kedacore/keda-metrics-apiserver:2.21.0@sha256:255375037fe592732eeb554743aae360c2da88cf0b9b1258d0a987ef885f0881
+- ghcr.io/kedacore/keda:2.21.0@sha256:81fe6547ce8d1cc29273f887b76507e9b853e5bc1f875ec23fe60061a38ed809
+ownership:
+- kind: ServiceAccount
+  namespace: keda
+  name: keda-operator
+- kind: ServiceAccount
+  namespace: keda
+  name: keda-metrics-server
+- kind: ServiceAccount
+  namespace: keda
+  name: keda-webhook
+- kind: CustomResourceDefinition
+  namespace: ''
+  name: cloudeventsources.eventing.keda.sh
+- kind: CustomResourceDefinition
+  namespace: ''
+  name: clustercloudeventsources.eventing.keda.sh
+- kind: CustomResourceDefinition
+  namespace: ''
+  name: clustertriggerauthentications.keda.sh
+- kind: CustomResourceDefinition
+  namespace: ''
+  name: scaledjobs.keda.sh
+- kind: CustomResourceDefinition
+  namespace: ''
+  name: scaledobjects.keda.sh
+- kind: CustomResourceDefinition
+  namespace: ''
+  name: triggerauthentications.keda.sh
+- kind: ClusterRole
+  namespace: ''
+  name: keda-operator
+- kind: ClusterRole
+  namespace: ''
+  name: keda-operator-minimal-cluster-role
+- kind: ClusterRole
+  namespace: ''
+  name: keda-operator-external-metrics-reader
+- kind: ClusterRole
+  namespace: ''
+  name: keda-operator-webhook
+- kind: ClusterRoleBinding
+  namespace: ''
+  name: keda-operator
+- kind: ClusterRoleBinding
+  namespace: ''
+  name: keda-operator-minimal
+- kind: ClusterRoleBinding
+  namespace: ''
+  name: keda-operator-system-auth-delegator
+- kind: ClusterRoleBinding
+  namespace: ''
+  name: keda-operator-hpa-controller-external-metrics
+- kind: ClusterRoleBinding
+  namespace: ''
+  name: keda-operator-webhook
+- kind: Role
+  namespace: keda
+  name: keda-operator-certs
+- kind: RoleBinding
+  namespace: keda
+  name: keda-operator-certs
+- kind: RoleBinding
+  namespace: kube-system
+  name: keda-operator-auth-reader
+- kind: Service
+  namespace: keda
+  name: keda-operator
+- kind: Service
+  namespace: keda
+  name: keda-operator-metrics-apiserver
+- kind: Service
+  namespace: keda
+  name: keda-admission-webhooks
+- kind: Deployment
+  namespace: keda
+  name: keda-operator
+- kind: Deployment
+  namespace: keda
+  name: keda-operator-metrics-apiserver
+- kind: Deployment
+  namespace: keda
+  name: keda-admission-webhooks
+- kind: APIService
+  namespace: ''
+  name: v1beta1.external.metrics.k8s.io
+- kind: Certificate
+  namespace: keda
+  name: keda-operator-tls-certificates
+- kind: Certificate
+  namespace: keda
+  name: keda-operator-ca
+- kind: Issuer
+  namespace: keda
+  name: keda-operator-issuer
+- kind: Issuer
+  namespace: keda
+  name: keda-operator-selfsigned-issuer
+- kind: ValidatingWebhookConfiguration
+  namespace: ''
+  name: keda-admission
+impact:
+- kind: CustomResourceDefinition
+  name: cloudeventsources.eventing.keda.sh
+  group: eventing.keda.sh
+  scope: Namespaced
+  names:
+    kind: CloudEventSource
+    listKind: CloudEventSourceList
+    plural: cloudeventsources
+    singular: cloudeventsource
+  versions:
+  - v1alpha1
+- kind: CustomResourceDefinition
+  name: clustercloudeventsources.eventing.keda.sh
+  group: eventing.keda.sh
+  scope: Cluster
+  names:
+    kind: ClusterCloudEventSource
+    listKind: ClusterCloudEventSourceList
+    plural: clustercloudeventsources
+    singular: clustercloudeventsource
+  versions:
+  - v1alpha1
+- kind: CustomResourceDefinition
+  name: clustertriggerauthentications.keda.sh
+  group: keda.sh
+  scope: Cluster
+  names:
+    kind: ClusterTriggerAuthentication
+    listKind: ClusterTriggerAuthenticationList
+    plural: clustertriggerauthentications
+    shortNames:
+    - cta
+    - clustertriggerauth
+    singular: clustertriggerauthentication
+  versions:
+  - v1alpha1
+- kind: CustomResourceDefinition
+  name: scaledjobs.keda.sh
+  group: keda.sh
+  scope: Namespaced
+  names:
+    kind: ScaledJob
+    listKind: ScaledJobList
+    plural: scaledjobs
+    shortNames:
+    - sj
+    singular: scaledjob
+  versions:
+  - v1alpha1
+- kind: CustomResourceDefinition
+  name: scaledobjects.keda.sh
+  group: keda.sh
+  scope: Namespaced
+  names:
+    kind: ScaledObject
+    listKind: ScaledObjectList
+    plural: scaledobjects
+    shortNames:
+    - so
+    singular: scaledobject
+  versions:
+  - v1alpha1
+- kind: CustomResourceDefinition
+  name: triggerauthentications.keda.sh
+  group: keda.sh
+  scope: Namespaced
+  names:
+    kind: TriggerAuthentication
+    listKind: TriggerAuthenticationList
+    plural: triggerauthentications
+    shortNames:
+    - ta
+    - triggerauth
+    singular: triggerauthentication
+  versions:
+  - v1alpha1
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - configmaps
+    - configmaps/status
+    - limitranges
+    - pods
+    - services
+    - serviceaccounts
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - events.k8s.io
+    - ''
+    resources:
+    - events
+    verbs:
+    - create
+    - patch
+  - apiGroups:
+    - discovery.k8s.io
+    resources:
+    - endpointslices
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - apps
+    resources:
+    - deployments/scale
+    - statefulsets/scale
+    verbs:
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - replicasets
+    - statefulsets
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - autoscaling
+    resources:
+    - horizontalpodautoscalers
+    verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  - apiGroups:
+    - eventing.keda.sh
+    resources:
+    - cloudeventsources
+    - cloudeventsources/status
+    - clustercloudeventsources
+    - clustercloudeventsources/status
+    verbs:
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  - apiGroups:
+    - keda.sh
+    resources:
+    - scaledjobs
+    - scaledjobs/finalizers
+    - scaledjobs/status
+    - scaledobjects
+    - scaledobjects/finalizers
+    - scaledobjects/status
+    - triggerauthentications
+    - triggerauthentications/status
+    verbs:
+    - get
+    - list
+    - patch
+    - update
+    - watch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-minimal-cluster-role
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-minimal-cluster-role
+  rules:
+  - apiGroups:
+    - keda.sh
+    resources:
+    - clustertriggerauthentications
+    - clustertriggerauthentications/status
+    verbs:
+    - get
+    - list
+    - patch
+    - update
+    - watch
+  - apiGroups:
+    - eventing.keda.sh
+    resources:
+    - cloudeventsources
+    - cloudeventsources/status
+    - clustercloudeventsources
+    - clustercloudeventsources/status
+    verbs:
+    - get
+    - list
+    - patch
+    - update
+    - watch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-external-metrics-reader
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-external-metrics-reader
+  rules:
+  - apiGroups:
+    - external.metrics.k8s.io
+    resources:
+    - externalmetrics
+    verbs:
+    - get
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-webhook
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-webhook
+  rules:
+  - apiGroups:
+    - autoscaling
+    resources:
+    - horizontalpodautoscalers
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - keda.sh
+    resources:
+    - scaledobjects
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - statefulsets
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - ''
+    resources:
+    - limitranges
+    verbs:
+    - list
+  - apiGroups:
+    - events.k8s.io
+    resources:
+    - events
+    verbs:
+    - create
+    - patch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: keda-operator
+  subjects:
+  - kind: ServiceAccount
+    name: keda-operator
+    namespace: keda
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-minimal
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-minimal
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: keda-operator-minimal-cluster-role
+  subjects:
+  - kind: ServiceAccount
+    name: keda-operator
+    namespace: keda
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-system-auth-delegator
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-system-auth-delegator
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: system:auth-delegator
+  subjects:
+  - kind: ServiceAccount
+    name: keda-metrics-server
+    namespace: keda
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-hpa-controller-external-metrics
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-hpa-controller-external-metrics
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: keda-operator-external-metrics-reader
+  subjects:
+  - kind: ServiceAccount
+    name: horizontal-pod-autoscaler
+    namespace: kube-system
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-webhook
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-webhook
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: keda-operator-webhook
+  subjects:
+  - kind: ServiceAccount
+    name: keda-webhook
+    namespace: keda
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator
+    namespace: keda
+  spec:
+    ports:
+    - name: metricsservice
+      port: 9666
+      targetPort: 9666
+    selector:
+      app: keda-operator
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-operator-metrics-apiserver
+      app: keda-operator-metrics-apiserver
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-operator-metrics-apiserver
+    namespace: keda
+  spec:
+    type: ClusterIP
+    ports:
+    - name: https
+      port: 443
+      targetPort: 6443
+      protocol: TCP
+      appProtocol: https
+    - name: metrics
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    selector:
+      app: keda-operator-metrics-apiserver
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app.kubernetes.io/name: keda-admission-webhooks
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-admission-webhooks
+    namespace: keda
+  spec:
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 9443
+      appProtocol: https
+    selector:
+      app: keda-admission-webhooks
+- kind: Container execution
+  owner: keda-operator
+  name: keda-operator
+  command:
+  - /keda
+  args:
+  - --leader-elect
+  - --disable-compression=true
+  - --zap-log-level=info
+  - --zap-encoder=console
+  - --zap-time-encoding=rfc3339
+  - --enable-webhook-patching=true
+  - --cert-dir=/certs
+  - --enable-cert-rotation=false
+  - --cert-secret-name=kedaorg-certs
+  - --operator-service-name=keda-operator
+  - --metrics-service-bind-address=:9666
+  - --metrics-server-service-name=keda-operator-metrics-apiserver
+  - --webhooks-service-name=keda-admission-webhooks
+  - --k8s-cluster-name=kubernetes-default
+  - --k8s-cluster-domain=cluster.local
+  - --enable-prometheus-metrics=false
+  - --http-max-idle-conns=0
+  - --http-max-idle-conns-per-host=1000
+  - --http-idle-conn-timeout=90s
+  - --service-account-token-mode=enforce-audience
+  - --vault-kubernetes-auth-token-file=/var/run/secrets/keda-vault/token
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+  resources:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  hostNetwork: false
+  hostPID: false
+  serviceAccountName: keda-operator
+- kind: Container execution
+  owner: keda-operator-metrics-apiserver
+  name: keda-operator-metrics-apiserver
+  command:
+  - /keda-adapter
+  args:
+  - --port=8080
+  - --secure-port=6443
+  - --logtostderr=true
+  - --stderrthreshold=ERROR
+  - --disable-compression=true
+  - --metrics-service-address=keda-operator.keda.svc.cluster.local:9666
+  - --client-ca-file=/certs/ca.crt
+  - --tls-cert-file=/certs/tls.crt
+  - --tls-private-key-file=/certs/tls.key
+  - --cert-dir=/certs
+  - --v=0
+  - --zap-log-level=info
+  - --zap-encoder=console
+  - --zap-time-encoding=rfc3339
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+  resources:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  hostNetwork: false
+  hostPID: false
+  serviceAccountName: keda-metrics-server
+- kind: Container execution
+  owner: keda-admission-webhooks
+  name: keda-admission-webhooks
+  command:
+  - /keda-admission-webhooks
+  args:
+  - --zap-log-level=info
+  - --zap-encoder=console
+  - --zap-time-encoding=rfc3339
+  - --cert-dir=/certs
+  - --health-probe-bind-address=:8081
+  - --metrics-bind-address=:8080
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+  resources:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  hostNetwork: false
+  hostPID: false
+  serviceAccountName: keda-webhook
+- apiVersion: admissionregistration.k8s.io/v1
+  kind: ValidatingWebhookConfiguration
+  metadata:
+    annotations:
+      cert-manager.io/inject-ca-from: keda/keda-operator-tls-certificates
+    labels:
+      app.kubernetes.io/name: keda-admission-webhooks
+      helm.sh/chart: keda-2.21.0
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: keda-operator
+      app.kubernetes.io/version: 2.21.0
+      app.kubernetes.io/instance: keda
+    name: keda-admission
+  webhooks:
+  - admissionReviewVersions:
+    - v1
+    clientConfig:
+      service:
+        name: keda-admission-webhooks
+        namespace: keda
+        path: /validate-keda-sh-v1alpha1-scaledobject
+    failurePolicy: Ignore
+    matchPolicy: Equivalent
+    name: vscaledobject.kb.io
+    namespaceSelector: {}
+    objectSelector: {}
+    rules:
+    - apiGroups:
+      - keda.sh
+      apiVersions:
+      - v1alpha1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - scaledobjects
+    sideEffects: None
+    timeoutSeconds: 10
+  - admissionReviewVersions:
+    - v1
+    clientConfig:
+      service:
+        name: keda-admission-webhooks
+        namespace: keda
+        path: /validate-keda-sh-v1alpha1-scaledjob
+    failurePolicy: Ignore
+    matchPolicy: Equivalent
+    name: vscaledjob.kb.io
+    namespaceSelector: {}
+    objectSelector: {}
+    rules:
+    - apiGroups:
+      - keda.sh
+      apiVersions:
+      - v1alpha1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - scaledjobs
+    sideEffects: None
+    timeoutSeconds: 10
+  - admissionReviewVersions:
+    - v1
+    clientConfig:
+      service:
+        name: keda-admission-webhooks
+        namespace: keda
+        path: /validate-keda-sh-v1alpha1-triggerauthentication
+    failurePolicy: Ignore
+    matchPolicy: Equivalent
+    name: vstriggerauthentication.kb.io
+    namespaceSelector: {}
+    objectSelector: {}
+    rules:
+    - apiGroups:
+      - keda.sh
+      apiVersions:
+      - v1alpha1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - triggerauthentications
+    sideEffects: None
+    timeoutSeconds: 10
+  - admissionReviewVersions:
+    - v1
+    clientConfig:
+      service:
+        name: keda-admission-webhooks
+        namespace: keda
+        path: /validate-keda-sh-v1alpha1-clustertriggerauthentication
+    failurePolicy: Ignore
+    matchPolicy: Equivalent
+    name: vsclustertriggerauthentication.kb.io
+    namespaceSelector: {}
+    objectSelector: {}
+    rules:
+    - apiGroups:
+      - keda.sh
+      apiVersions:
+      - v1alpha1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - clustertriggerauthentications
+    sideEffects: None
+    timeoutSeconds: 10
+  - admissionReviewVersions:
+    - v1
+    clientConfig:
+      service:
+        name: keda-admission-webhooks
+        namespace: keda
+        path: /validate-eventing-keda-sh-v1alpha1-cloudeventsource
+    failurePolicy: Ignore
+    matchPolicy: Equivalent
+    name: vcloudeventsource.kb.io
+    namespaceSelector: {}
+    objectSelector: {}
+    rules:
+    - apiGroups:
+      - eventing.keda.sh
+      apiVersions:
+      - v1alpha1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - cloudeventsources
+    sideEffects: None
+    timeoutSeconds: 10
+  - admissionReviewVersions:
+    - v1
+    clientConfig:
+      service:
+        name: keda-admission-webhooks
+        namespace: keda
+        path: /validate-eventing-keda-sh-v1alpha1-clustercloudeventsource
+    failurePolicy: Ignore
+    matchPolicy: Equivalent
+    name: vclustercloudeventsource.kb.io
+    namespaceSelector: {}
+    objectSelector: {}
+    rules:
+    - apiGroups:
+      - eventing.keda.sh
+      apiVersions:
+      - v1alpha1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - clustercloudeventsources
+    sideEffects: None
+    timeoutSeconds: 10
+schemaCoverage: Standard kinds checked; custom kinds verified against the live API.
+probeImage: docker.io/library/alpine@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf

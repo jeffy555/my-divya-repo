@@ -1,0 +1,44 @@
+name: spiritops-aks
+cloud: azure
+mode: AKS Standard
+kubernetes: 1.36.5
+roots:
+  - id: cluster
+    path: cluster
+    requires: []
+  - id: keda-operator
+    path: components/keda/operator
+    requires:
+      - cluster
+      - cert-manager-configuration
+  - id: cert-manager-operator
+    path: components/cert-manager/operator
+    requires:
+      - cluster
+  - id: cert-manager-configuration
+    path: components/cert-manager/configuration
+    requires:
+      - cert-manager-operator
+components:
+  - name: keda
+    digest: a7da56bf41a33dad9d2fc82a6fdecee552fff947d80bf1e1dbcf4db0f9e26dee
+    reason: Official chart version and archive checksum resolved. Requires the
+      reviewed cert-manager installation for TLS. Compatibility, image scans,
+      permissions and functional scaling verification are still required.
+    source: https://kedacore.github.io/charts/keda
+    status: resolved
+    license: Apache-2.0
+    version: 2.21.0
+    requires:
+      - cert-manager
+    namespace: keda
+  - name: cert-manager
+    reason: Official release resolved. Chart digest, compatibility, scans and
+      functional verification are still required.
+    source: oci://quay.io/jetstack/charts/cert-manager
+    status: resolved
+    license: Apache-2.0
+    version: v1.21.3
+    requires: []
+    namespace: cert-manager
+delivery: deploy-then-commit

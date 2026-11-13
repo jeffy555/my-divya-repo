@@ -1,0 +1,8 @@
+name: cert-manager
+source: oci://quay.io/jetstack/charts/cert-manager
+version: v1.21.3
+namespace: cert-manager
+license: Apache-2.0
+requires: []
+verification: self-signed-certificate
+data_bearing: false

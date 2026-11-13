@@ -1,0 +1,10 @@
+resource_group     = "spiritops-aks-rg"
+location           = "southindia"
+cluster_name       = "spiritops-aks"
+kubernetes_version = "1.36.5"
+node_size          = "Standard_A4_v2"
+node_count         = 1
+private_cluster    = false
+authorized_cidrs   = ["20.219.73.101/32", "49.205.83.219/32"]
+tags               = { "Environment" : "dev", "Owner" : "platform-team", "CostCenter" : "platform-builder" }
+registry_name      = "spiritopsacr"

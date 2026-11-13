@@ -1,0 +1,28 @@
+formatVersion: 1
+scope: verified-stage
+sourceFingerprint: 03f6dd82e2b00c28d5061a1036776637eda21a5ac90301e6be1e727343fb34d5
+verifiedRoots:
+  - id: cluster
+    path: cluster
+  - id: keda-operator
+    path: components/keda/operator
+  - id: cert-manager-operator
+    path: components/cert-manager/operator
+  - id: cert-manager-configuration
+    path: components/cert-manager/configuration
+installedComponents:
+  - name: keda
+    namespace: keda
+    version: 2.21.0
+  - name: cert-manager
+    namespace: cert-manager
+    version: v1.21.3
+pendingComponents:
+  - postgresql
+  - argo-cd
+  - kafka
+  - csi-driver
+approvedBy: jeffersonimmanuel5@gmail.com
+approvedAt: 2026-11-13T13:31:26.121Z
+notice: Only this verified stage is published. Pending selections remain in the
+  saved design and are not installed or verified by this receipt.
